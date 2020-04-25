@@ -1,4 +1,4 @@
-id,name,rgb,is_trans
+color_id,name,rgb,is_trans
 -1,Unknown,0033B2,f
 0,Black,05131D,f
 1,Blue,0055BF,f
@@ -57,7 +57,7 @@ id,name,rgb,is_trans
 72,Dark Bluish Gray,6C6E68,f
 73,Medium Blue,5A93DB,f
 74,Medium Green,73DCA1,f
-75,Speckle Black-Copper,000000,f
+75,Speckle Black-Copper,0,f
 76,Speckle DBGray-Silver,635F61,f
 77,Light Pink,FECCCF,f
 78,Light Flesh,F6D7B3,f
@@ -80,8 +80,8 @@ id,name,rgb,is_trans
 120,Light Lime,D9E4A7,f
 125,Light Orange,F9BA61,f
 129,Glitter Trans-Purple,A5A5CB,t
-132,Speckle Black-Silver,000000,f
-133,Speckle Black-Gold,000000,f
+132,Speckle Black-Silver,0,f
+133,Speckle Black-Gold,0,f
 134,Copper,AE7A59,f
 135,Pearl Light Gray,9CA3A8,f
 137,Metal Blue,7988A1,f
@@ -117,7 +117,7 @@ id,name,rgb,is_trans
 335,Sand Red,D67572,f
 351,Medium Dark Pink,F785B1,f
 366,Earth Orange,FA9C1C,f
-373,Sand Purple,845E84,f
+373,Sand Purple,8.45E+86,f
 378,Sand Green,A0BCAC,f
 379,Sand Blue,6074A1,f
 383,Chrome Silver,E0E0E0,f
@@ -126,7 +126,7 @@ id,name,rgb,is_trans
 484,Dark Orange,A95500,f
 503,Very Light Gray,E6E3DA,f
 1000,Glow in Dark White,D9D9D9,f
-1001,Medium Violet,9391E4,f
+1001,Medium Violet,9.39E+07,f
 1002,Glitter Trans-Neon Green,C0F500,t
 1003,Glitter Trans-Light Blue,68BCC5,t
 1004,Trans Flame Yellowish Orange,FCB76D,t
