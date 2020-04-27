@@ -40,11 +40,10 @@ class mains():
     len(data['set_name'])
     len(dataMini['set_name'])
     data.head(10)
-    print(dataMini)
 
     # %% codecell
     #Graph 1 - Histogram of Star Ratings
-    dataMini[['val_star_rating']].plot(kind='hist',bins=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5],rwidth=0.8, title='Frequency of Star Ratings')
+    dataMini[['val_star_rating']].plot(kind='hist',bins=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5],rwidth=0.8, title='Frequency of Star Ratings',figsize=(16,12))
     plt.xlabel('Rating')
     plt.xticks([0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5])
     plt.ylabel('Frequency')
@@ -52,7 +51,7 @@ class mains():
     # %% codecell
     #Graph 2 - Difficulty Vs. Average Star Ratings
     order = ['Very Easy', 'Easy', 'Average', 'Challenging','Very Challenging']
-    dataMini.groupby(['review_difficulty'])['val_star_rating'].mean().loc[order].plot(kind='bar', title='Review Difficulty Vs. Average Star Ratings')
+    dataMini.groupby(['review_difficulty'])['val_star_rating'].mean().loc[order].plot(kind='bar', title='Review Difficulty Vs. Average Star Ratings',figsize=(16,12))
     plt.xlabel('Review Difficulty')
     plt.yticks([0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5])
     plt.ylabel('Average 5-Star Rating')
@@ -76,4 +75,15 @@ class mains():
     plt.xlabel('Piece Count')
     plt.yticks(np.arange(0, 5.25, step=0.25))
     plt.ylabel('5-Star Rating')
+    plt.show()
+
+    # %% codecell
+    #Graph 5 - Color Vs. Average Star Ratings
+    colors=(list(data.groupby(['color_name'])['rgb'].unique()))
+    colors=["#"+x[0] for x in colors]
+    plt.figure(figsize=(16,12))
+    data.groupby(['color_name'])['val_star_rating'].mean().plot(kind='bar', title='Color Vs. Average Star Ratings',color=colors)
+    plt.xlabel('Color Name')
+    plt.yticks([0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5])
+    plt.ylabel('Average 5-Star Rating')
     plt.show()
