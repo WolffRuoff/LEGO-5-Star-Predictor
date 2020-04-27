@@ -41,49 +41,70 @@ class mains():
     len(dataMini['set_name'])
     data.head(10)
 
+
     # %% codecell
+    mpl.style.use('seaborn-poster')
     #Graph 1 - Histogram of Star Ratings
-    dataMini[['val_star_rating']].plot(kind='hist',bins=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5],rwidth=0.8, title='Frequency of Star Ratings',figsize=(16,12))
-    plt.xlabel('Rating')
-    plt.xticks([0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5])
-    plt.ylabel('Frequency')
+    dataMini[['val_star_rating']].plot(kind='hist',bins=np.arange(0,5.1,0.2),rwidth=0.9, figsize=(16,9), legend=False)
+    plt.xlabel('Rating', fontsize=18)
+    plt.ylabel('Number of Sets', fontsize=18)
+    plt.title('Frequency of Star Ratings', fontsize=20, weight='bold')
+    plt.xticks(np.arange(0,5.2,0.2))
+    plt.yticks(np.arange(0,1250,100))
+    plt.ylim(0,1200)
+    plt.xlim(0,5)
+    plt.show()
 
     # %% codecell
     #Graph 2 - Difficulty Vs. Average Star Ratings
     order = ['Very Easy', 'Easy', 'Average', 'Challenging','Very Challenging']
-    dataMini.groupby(['review_difficulty'])['val_star_rating'].mean().loc[order].plot(kind='bar', title='Review Difficulty Vs. Average Star Ratings',figsize=(16,12))
-    plt.xlabel('Review Difficulty')
-    plt.yticks([0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5])
-    plt.ylabel('Average 5-Star Rating')
+    my_colors = [(x/10.0, x/20.0, 0.75) for x in range(len(order))]
+    dataMini.groupby(['review_difficulty'])['val_star_rating'].mean().loc[order].plot(kind='bar',figsize=(16,9), color=['green','limegreen','yellow','orange','red'])
+    plt.title('Review Difficulty Vs. Average Star Ratings',fontsize=20, weight='bold')
+    plt.xlabel('Review Difficulty', fontsize=18)
+    plt.yticks(np.arange(3,5.5,0.2))
+    plt.ylabel('Average 5-Star Rating', fontsize=18)
+    plt.ylim(3,5)
     plt.show()
 
     # %% codecell
     #Graph 3 - List Price Vs. Star Rating
-    dataMini.plot(kind='scatter',x='list_price',y='val_star_rating', figsize=(16,12))
-    plt.title("List Price Vs. Star Rating")
-    plt.xlabel('List Price ($)')
-    plt.yticks(np.arange(0, 5.25, step=0.25))
-    #plt.xticks([0,20,50,100,200,300,400,500,600,700,800,900,1000,1100,1200])
+    dataMini.plot(kind='scatter',x='list_price',y='val_star_rating', figsize=(16,9), alpha=0.5)
+    plt.title("List Price Vs. Star Rating", fontsize = 20, weight='bold')
+    plt.xlabel('List Price ($)', fontsize=18)
+    plt.yticks(np.arange(1, 5.1, step=0.2))
     plt.xticks(np.arange(0, 1200, step=100))
-    plt.ylabel('5-Star Rating')
+    plt.ylabel('5-Star Rating', fontsize=18)
     plt.show()
-
+    # %% codecell
+    #Graph 3.5 - List Price Vs. Star Rating Under $100
+    dataMini.plot(kind='scatter',x='list_price',y='val_star_rating', figsize=(16,9), alpha=0.1, s=100)
+    plt.title("List Price Vs. Star Rating Under $150", fontsize=20, weight='bold')
+    plt.xlabel('List Price ($)', fontsize = 18)
+    plt.yticks(np.arange(1, 5.01, step=0.2))
+    plt.xticks(np.arange(0, 151, step=10))
+    plt.xlim(0,150)
+    plt.ylabel('5-Star Rating', fontsize = 18)
+    plt.show()
     # %% codecell
     #Graph 4 - Piece Count Vs. Star Rating
-    dataMini.plot(kind='scatter',x='piece_count',y='val_star_rating',figsize=(16,12))
+    dataMini.plot(kind='scatter',x='piece_count',y='val_star_rating',figsize=(16,9))
     plt.title("Piece Count vs Star Rating")
     plt.xlabel('Piece Count')
-    plt.yticks(np.arange(0, 5.25, step=0.25))
+    plt.xlim(0,8000)
+    plt.yticks(np.arange(0, 5.1, step=0.2))
     plt.ylabel('5-Star Rating')
     plt.show()
 
     # %% codecell
     #Graph 5 - Color Vs. Average Star Ratings
     colors=(list(data.groupby(['color_name'])['rgb'].unique()))
+    print(colors)
     colors=["#"+x[0] for x in colors]
     plt.figure(figsize=(16,12))
     data.groupby(['color_name'])['val_star_rating'].mean().plot(kind='bar', title='Color Vs. Average Star Ratings',color=colors)
     plt.xlabel('Color Name')
-    plt.yticks([0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5])
-    plt.ylabel('Average 5-Star Rating')
+    plt.yticks(np.arange(3,5.5,0.2))
+    plt.ylabel('Average 5-Star Rating', fontsize=18)
+    plt.ylim(3,5)
     plt.show()
