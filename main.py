@@ -24,9 +24,9 @@ class mains():
     #lego_sets.head()
 
     # %% codecell
-    len(inventory_parts['inventory_id'])
-    len(colors['color_id'])
-    len(lego_sets['set_name'])
+    #len(inventory_parts['inventory_id'])
+    #len(colors['color_id'])
+    #len(lego_sets['set_name'])
     data = pandas.merge(sets, inventories[['inventory_id', 'set_num']], on = 'set_num', how='left')
     data = pandas.merge(data, inventory_parts[['inventory_id', 'part_num', 'color_id']], on = 'inventory_id', how='right')
     data = pandas.merge(data, colors[['color_id','color_name', 'rgb']], on = 'color_id')
@@ -34,12 +34,10 @@ class mains():
     len(data['set_name'])
     data = pandas.merge(lego_sets, data[['set_name', 'inventory_id', 'num_parts', 'part_num', 'theme_id', 'color_id', 'color_name', 'rgb']], on = 'set_name', how='left')
     data = data.drop(['prod_desc', 'prod_long_desc', 'country', 'num_parts'], axis=1)
-    dataMini = data.drop(['inventory_id', 'part_num', 'color_id', 'color_name', 'rgb', 'theme_id', 'prod_id'], axis=1, errors='ignore')
+    data = data.drop(['inventory_id', 'part_num', 'color_id', 'color_name', 'rgb', 'theme_id', 'prod_id'], axis=1, errors='ignore')
     data = data.drop_duplicates()
-    dataMini = dataMini.drop_duplicates()
     len(data['set_name'])
-    len(dataMini['set_name'])
-    data.head(10)
+    data.head(20)
 
     # %% codecell
     plt.style.use('seaborn')
@@ -59,7 +57,7 @@ class mains():
 
     # %% codecell
     #Graph 1 - Histogram of Star Ratings
-    dataMini[['val_star_rating']].plot(kind='hist',bins=np.arange(0,5.1,0.2),rwidth=0.9, figsize=(8,4.5), legend=False)
+    data[['val_star_rating']].plot(kind='hist',bins=np.arange(0,5.1,0.2),rwidth=0.9, figsize=(8,4.5), legend=False)
     plt.xlabel('Rating')
     plt.ylabel('Number of Sets')
     plt.title('Frequency of Star Ratings')
@@ -73,10 +71,10 @@ class mains():
     #Graph 2 - Difficulty Vs. Average Star Ratings
     import seaborn as sns
     order = ['Very Easy', 'Easy', 'Average', 'Challenging','Very Challenging']
-    plt.figure(figsize=(8,4.5))
+    plt.figure(figsize=(7,4.5))
     #dataMini.groupby(['review_difficulty'])['val_star_rating'].mean().loc[order].plot(kind='bar',figsize=(8,4.5), color=['green','limegreen','yellow','orange','red'])
     #dataMini.boxplot(by=['review_difficulty'], column=['val_star_rating'])
-    sns.boxplot(x=dataMini['review_difficulty'], y=dataMini['val_star_rating'], order=['Very Easy', 'Easy', 'Average', 'Challenging','Very Challenging'], width=1, hue=dataMini['review_difficulty'], palette='RdYlGn', hue_order=['Very Challenging', 'Challenging', 'Average', 'Easy','Very Easy'])
+    sns.boxplot(x=data['review_difficulty'], y=data['val_star_rating'], order=['Very Easy', 'Easy', 'Average', 'Challenging','Very Challenging'], width=0.5, fliersize=3, hue=data['review_difficulty'], palette='RdYlGn', hue_order=['Very Challenging', 'Challenging', 'Average', 'Easy','Very Easy'])
     plt.legend([])
     plt.title('Review Difficulty Vs. Average Star Ratings')
     plt.xlabel('Review Difficulty')
@@ -87,7 +85,7 @@ class mains():
 
     # %% codecell
     #Graph 3 - List Price Vs. Star Rating
-    dataMini.plot(kind='scatter',x='list_price',y='val_star_rating', figsize=(10,4.5), alpha=0.5)
+    data.plot(kind='scatter',x='list_price',y='val_star_rating', figsize=(10,4.5), alpha=0.5)
     plt.title("List Price Vs. Star Rating", weight='bold')
     plt.xlabel('List Price ($)')
     plt.yticks(np.arange(1, 5.1, step=0.2))
@@ -98,7 +96,7 @@ class mains():
     plt.show()
     # %% codecell
     #Graph 3.5 - List Price Vs. Star Rating Under $100
-    dataMini.plot(kind='scatter',x='list_price',y='val_star_rating', figsize=(9,4.5), alpha=0.1)
+    data.plot(kind='scatter',x='list_price',y='val_star_rating', figsize=(9,4.5), alpha=0.1)
     plt.title("List Price Vs. Star Rating Under $150")
     plt.xlabel('List Price ($)')
     plt.yticks(np.arange(1, 5.01, step=0.2))
@@ -106,9 +104,10 @@ class mains():
     plt.xlim(0,150)
     plt.ylabel('5-Star Rating')
     plt.show()
+
     # %% codecell
     #Graph 4 - Piece Count Vs. Star Rating
-    dataMini.plot(kind='scatter',x='piece_count',y='val_star_rating',figsize=(9,4.5), alpha = 0.1)
+    data.plot(kind='scatter',x='piece_count',y='val_star_rating',figsize=(9,4.5), alpha = 0.1)
     plt.title("Piece Count vs Star Rating")
     plt.xlabel('Piece Count')
     plt.xlim(0,8000)
@@ -118,7 +117,7 @@ class mains():
 
     # %% codecell
     #Graph 4.5 - Piece Count (Under 1000) Vs. Star Rating
-    dataMini.plot(kind='scatter',x='piece_count',y='val_star_rating',figsize=(9,4.5), alpha = 0.1)
+    data.plot(kind='scatter',x='piece_count',y='val_star_rating',figsize=(9,4.5), alpha = 0.1)
     plt.title("Piece Count vs Star Rating")
     plt.xlabel('Piece Count')
     plt.xlim(0,1000)
@@ -127,14 +126,20 @@ class mains():
     plt.show()
 
     # %% codecell
-    #Graph 5 - Color Vs. Average Star Ratings
-    colors=(list(data.groupby(['color_name'])['rgb'].unique()))
-    print(colors)
-    colors=["#"+x[0] for x in colors]
-    plt.figure(figsize=(16,12))
-    data.groupby(['color_name'])['val_star_rating'].mean().plot(kind='bar', title='Color Vs. Average Star Ratings',color=colors, figsize=(15,4.5))
-    plt.xlabel('Color Name')
-    plt.yticks(np.arange(3,5.5,0.2))
-    plt.ylabel('Average 5-Star Rating')
-    plt.ylim(3,5)
-    plt.show()
+    # Cleanup Data
+    cleanup_difficulty = {"review_difficulty":     {"Very Easy": 1, "Easy": 2, "Average": 3, "Challenging": 4, "Very Challenging": 5}}
+    data.replace(cleanup_difficulty, inplace=True)
+    data.head()
+
+    #Official Age ratings used on the LEGO store website
+    # 0 = 1-2
+    # 1 = 3-5
+    # 2 = 6-8
+    # 3 = 9-11
+    # 4 = 12+
+    #Category chosen by average of age rage rounded down with + values using the minimum age
+    cleanup_age = {"ages":     {"6-12": 3, "7-14": 3, "8-14": 3, "5-12": 2, "2-5": 1, "7-12": 2, "4-7": 1, "10+": 3, "9-14": 3, "16+": 4, "8-12": 3,
+                                "12+": 4, "4-99": 4, "8+": 2, "14+": 4, "1½-3": 0, "6-14": 3, "10-21": 4, "10-16": 4, "6+": 2, "1½-5": 1, "9-16": 4,
+                                "11-16": 4, "5+": 1, "12-16": 4, "9-12": 3, "9+": 3, "5-8": 2, "10-14": 4, "4+": 1, "7+": 2}}
+    data.replace(cleanup_age, inplace=True)
+    data.head()
