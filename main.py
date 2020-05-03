@@ -16,12 +16,13 @@ class mains():
     inventory_parts = pandas.read_csv(os.path.join(set1,'inventory_parts.csv'))
     #inventory_parts.head()
     sets = pandas.read_csv(os.path.join(set1,'sets.csv'))
-    #sets.head()
+    len(sets)
     themes = pandas.read_csv(os.path.join(set1,'themes.csv'))
     #themes.head()
     set2 = os.path.join('.', 'data', 'Set2')
     lego_sets = pandas.read_csv(os.path.join(set2,'lego_sets.csv'))
-    #lego_sets.head()
+    #len(lego_sets)
+    #lego_sets['val_star_rating'].value_counts(dropna=False)
 
     # %% codecell
     #len(inventory_parts['inventory_id'])
@@ -36,6 +37,7 @@ class mains():
     data = data.drop(['prod_desc', 'prod_long_desc', 'country', 'num_parts'], axis=1)
     data = data.drop(['inventory_id', 'part_num', 'color_id', 'color_name', 'rgb', 'theme_id', 'prod_id'], axis=1, errors='ignore')
     data = data.drop_duplicates()
+    data = data.dropna(axis=0, how='any')
     len(data['set_name'])
     data.head(20)
 
@@ -138,8 +140,71 @@ class mains():
     # 3 = 9-11
     # 4 = 12+
     #Category chosen by average of age rage rounded down with + values using the minimum age
-    cleanup_age = {"ages":     {"6-12": 3, "7-14": 3, "8-14": 3, "5-12": 2, "2-5": 1, "7-12": 2, "4-7": 1, "10+": 3, "9-14": 3, "16+": 4, "8-12": 3,
+    age_dict = {"6-12": 3, "7-14": 3, "8-14": 3, "5-12": 2, "2-5": 1, "7-12": 2, "4-7": 1, "10+": 3, "9-14": 3, "16+": 4, "8-12": 3,
                                 "12+": 4, "4-99": 4, "8+": 2, "14+": 4, "1½-3": 0, "6-14": 3, "10-21": 4, "10-16": 4, "6+": 2, "1½-5": 1, "9-16": 4,
-                                "11-16": 4, "5+": 1, "12-16": 4, "9-12": 3, "9+": 3, "5-8": 2, "10-14": 4, "4+": 1, "7+": 2}}
-    data.replace(cleanup_age, inplace=True)
+                                "11-16": 4, "5+": 1, "12-16": 4, "9-12": 3, "9+": 3, "5-8": 2, "10-14": 4, "4+": 1, "7+": 2}
+    data.replace({"ages":age_dict}, inplace=True)
+    data = data.drop(['play_star_rating', 'star_rating', 'set_name'], axis=1)
+    theme_dict={}
+    i=0
+    for theme in data['theme_name'].unique():
+        theme_dict[theme]=i
+        i=i+1
+    data.replace({"theme_name": theme_dict}, inplace=True)
+    data = data.round(2)
+
+    data = data.drop(['num_reviews'],axis=1)
+    data = data.reset_index()
+    data = data.drop(['index'], axis=1)
+
+    for i in range(0,len(data['val_star_rating'])):
+        data.loc[i,'val_star_rating'] = data.loc[i,'val_star_rating'] * 10
     data.head()
+
+    # %% codecell
+    #AI
+    from sklearn.model_selection import train_test_split
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.naive_bayes import GaussianNB
+    from sklearn.model_selection import KFold
+    from sklearn.metrics import accuracy_score
+    x = data.drop(['review_difficulty'], axis=1)
+    y = list(data['review_difficulty'].astype(int))
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=12)
+    x_train.shape
+    x_test.shape
+
+    sc = StandardScaler()
+    x = sc.fit_transform(x)
+    train_scaled = sc.fit_transform(x_train)
+    test_scaled = sc.transform(x_test)
+    model = GaussianNB()
+    #model.fit(train_scaled, y_train)
+    #accuracy_score(y_train, model.predict(train_scaled))
+
+    # %% codecell
+    kf=KFold(20)
+    test_accuracy=[]
+    train_accuracy=[]
+    for train, test in kf.split(x):
+        x_train=[]
+        y_train=[]
+        for i in train:
+            x_train.append(x[i])
+            y_train.append(y[i])
+
+        x_test=[]
+        y_test=[]
+        for i in test:
+            x_test.append(x[i])
+            y_test.append(y[i])
+
+        model.fit(x_train, y_train)
+        train_accuracy.append(accuracy_score(y_train,model.predict(x_train)))
+        test_accuracy.append(accuracy_score(y_test,model.predict(x_test)))
+
+    plt.hist(train_accuracy, density=True,label="Training Accuracy",bins=20, color='r')
+    plt.hist(test_accuracy, density=True,label="Test Accuracy",bins=20, color='c')
+    plt.xlabel("Percent Accuracy")
+    plt.legend(loc='upper left')
+    plt.show()
