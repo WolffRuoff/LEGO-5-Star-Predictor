@@ -162,7 +162,7 @@ class mains():
     data.head()
 
     # %% codecell
-    #AI
+    #ML
     from sklearn.model_selection import train_test_split
     from sklearn.preprocessing import StandardScaler
     from sklearn.naive_bayes import GaussianNB
@@ -208,3 +208,20 @@ class mains():
     plt.xlabel("Percent Accuracy")
     plt.legend(loc='upper left')
     plt.show()
+
+    # %% codecell
+    #baseline accuracy
+    for r in data['val_star_rating']:
+        if r in rating_dict:
+            rating_dict[r]=rating_dict[r]+1
+        else:
+            rating_dict[r]=1
+    max_val=max(rating_dict, key=rating_dict.get)
+    total=0.0
+    for key in rating_dict.keys():
+        total=total+rating_dict[key]
+    total
+    rating_dict[max_val]
+    baseline_accuracy=float(rating_dict[max_val]/total)*100
+    print("Majority Value: %d"%(max_val/10))
+    print("Baseline Accuracy: %s"%baseline_accuracy)
