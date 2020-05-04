@@ -33,7 +33,6 @@ As stated in the introduction, we attempted to use a Gaussian Naive Bays classif
 
 ![Machine Learning Results](./Images/MLResults.png)
 
-As you can see in the graph above, our training accuracy was only about 14%. At first, we thought we must have coded our model wrong, but after triple checking our code we were certain it was correct. We then tried testing on many of the different features we had, removing and replacing the initial four listed above, but nothing helped. Upon further inspection, we realized that trying to predict exactly a 4.3 or a 2.7 rating was extremely difficult. The data had a baseline accuracy of only 14.12%!
-
+As you can see in the graph above, our training accuracy was only about 14%. At first, we thought we must have coded our model wrong, but after triple checking our code we were certain it was correct. We then tried training our model on many of the different features we had, removing and replacing the initial four listed above, but nothing helped. Upon further inspection, we realized that trying to predict an exact rating was extremely difficult, to the point the baseline accuracy was only 14.12%! 
 
 ## Conclusion
