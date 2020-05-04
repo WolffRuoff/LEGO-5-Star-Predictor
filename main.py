@@ -8,26 +8,16 @@ class mains():
     # %% codecell
     set1 = os.path.join('.', 'data', 'Set1')
     colors = pandas.read_csv(os.path.join(set1,'colors.csv'))
-    #colors.head()
     inventories = pandas.read_csv(os.path.join(set1,'inventories.csv'))
-    #inventories.head()
-    #inventory_sets=pandas.read_csv(os.path.join(set1,'inventory_sets.csv'))
-    #inventory_sets.head()
     inventory_parts = pandas.read_csv(os.path.join(set1,'inventory_parts.csv'))
-    #inventory_parts.head()
     sets = pandas.read_csv(os.path.join(set1,'sets.csv'))
     len(sets)
     themes = pandas.read_csv(os.path.join(set1,'themes.csv'))
-    #themes.head()
     set2 = os.path.join('.', 'data', 'Set2')
     lego_sets = pandas.read_csv(os.path.join(set2,'lego_sets.csv'))
-    #len(lego_sets)
-    #lego_sets['val_star_rating'].value_counts(dropna=False)
 
     # %% codecell
-    #len(inventory_parts['inventory_id'])
-    #len(colors['color_id'])
-    #len(lego_sets['set_name'])
+
     data = pandas.merge(sets, inventories[['inventory_id', 'set_num']], on = 'set_num', how='left')
     data = pandas.merge(data, inventory_parts[['inventory_id', 'part_num', 'color_id']], on = 'inventory_id', how='right')
     data = pandas.merge(data, colors[['color_id','color_name', 'rgb']], on = 'color_id')
@@ -39,11 +29,11 @@ class mains():
     data = data.drop_duplicates()
     data = data.dropna(axis=0, how='any')
     len(data['set_name'])
-    data.head(20)
 
     # %% codecell
+    # Formatting for the graphs
+    import seaborn as sns
     plt.style.use('seaborn')
-    #plt.rcParams['font.family'] = 'serif'
     plt.rcParams['font.serif'] = 'Ubuntu'
     plt.rcParams['font.monospace'] = 'Ubuntu Mono'
     plt.rcParams['font.size'] = 7.0
@@ -58,7 +48,7 @@ class mains():
 
 
     # %% codecell
-    #Graph 1 - Histogram of Star Ratings
+    #Graph 1 - Bar Chart of Star Ratings
     data[['val_star_rating']].plot(kind='hist',bins=np.arange(0,5.1,0.2),rwidth=0.9, figsize=(8,4.5), legend=False)
     plt.xlabel('Rating')
     plt.ylabel('Number of Sets')
@@ -71,11 +61,8 @@ class mains():
 
     # %% codecell
     #Graph 2 - Difficulty Vs. Average Star Ratings
-    import seaborn as sns
     order = ['Very Easy', 'Easy', 'Average', 'Challenging','Very Challenging']
     plt.figure(figsize=(7,4.5))
-    #dataMini.groupby(['review_difficulty'])['val_star_rating'].mean().loc[order].plot(kind='bar',figsize=(8,4.5), color=['green','limegreen','yellow','orange','red'])
-    #dataMini.boxplot(by=['review_difficulty'], column=['val_star_rating'])
     sns.boxplot(x=data['review_difficulty'], y=data['val_star_rating'], order=['Very Easy', 'Easy', 'Average', 'Challenging','Very Challenging'], width=0.5, fliersize=3, hue=data['review_difficulty'], palette='RdYlGn', hue_order=['Very Challenging', 'Challenging', 'Average', 'Easy','Very Easy'])
     plt.legend([])
     plt.title('Review Difficulty Vs. Average Star Ratings')
@@ -170,17 +157,10 @@ class mains():
     from sklearn.metrics import accuracy_score
     x = data.drop(['review_difficulty'], axis=1)
     y = list(data['review_difficulty'].astype(int))
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=12)
-    x_train.shape
-    x_test.shape
 
     sc = StandardScaler()
     x = sc.fit_transform(x)
-    train_scaled = sc.fit_transform(x_train)
-    test_scaled = sc.transform(x_test)
     model = GaussianNB()
-    #model.fit(train_scaled, y_train)
-    #accuracy_score(y_train, model.predict(train_scaled))
 
     # %% codecell
     kf=KFold(20)
