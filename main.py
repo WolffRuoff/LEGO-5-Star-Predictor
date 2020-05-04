@@ -211,11 +211,13 @@ class mains():
 
     # %% codecell
     #baseline accuracy
+    rating_dict={}
     for r in data['val_star_rating']:
         if r in rating_dict:
             rating_dict[r]=rating_dict[r]+1
         else:
             rating_dict[r]=1
+    rating_dict
     max_val=max(rating_dict, key=rating_dict.get)
     total=0.0
     for key in rating_dict.keys():
@@ -223,5 +225,5 @@ class mains():
     total
     rating_dict[max_val]
     baseline_accuracy=float(rating_dict[max_val]/total)*100
-    print("Majority Value: %d"%(max_val/10))
+    print("Majority Value: %s"%(max_val/10))
     print("Baseline Accuracy: %s"%baseline_accuracy)
