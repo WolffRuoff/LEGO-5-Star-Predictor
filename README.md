@@ -29,9 +29,11 @@ For this graph we decided to see how the review difficulty of a LEGO set influen
 ![Graph 4.5](./Images/Graph4_5.png)
 
 ## Machine Learning
-
+As stated in the introduction, we attempted to use a Gaussian Naive Bays classifier to predict the optimal features for a perfect LEGO set. Specifically, we looked at the recommended age, list price, difficulty, and theme of each set. The one thing we were not expecting, however, was to find that the data did not lend itself to classification at all.
 
 ![Machine Learning Results](./Images/MLResults.png)
+
+As you can see in the graph above, our training accuracy was only about 14%. At first, we thought we must have coded our model wrong, but after triple checking our code we were certain it was correct. We then tried testing on many of the different features we had, removing and replacing the initial four listed above, but nothing helped. Upon further inspection, we realized that trying to predict exactly a 4.3 or a 2.7 rating was extremely difficult. The data had a baseline accuracy of only 14.12%!
 
 
 ## Conclusion
