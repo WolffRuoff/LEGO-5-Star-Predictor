@@ -157,8 +157,8 @@ class mains():
     from sklearn.naive_bayes import GaussianNB
     from sklearn.model_selection import KFold
     from sklearn.metrics import accuracy_score
-    x = data.drop(['review_difficulty'], axis=1)
-    y = list(data['review_difficulty'].astype(int))
+    x = data.drop(['val_star_rating'], axis=1)
+    y = list(data['val_star_rating'].astype(int))
 
     sc = StandardScaler()
     x = sc.fit_transform(x)
