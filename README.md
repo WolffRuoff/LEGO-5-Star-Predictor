@@ -15,24 +15,46 @@ The second dataset, found [here](https://www.kaggle.com/mterzolo/lego-sets), had
 #### Graph 1: Frequency of the Star Ratings
 ![Graph 1](./Images/Graph1.png)
 
+To start off we wanted to observe how many of each star rating we had. To prevent clutter, we decide to show it in intervals of 0.2 in a bar graph. Notable observations are that a vast majority of reviews are above a 4.0 meaning that reviewers are generally very generous with their ratings.
+
 #### Graph 2: Review Difficulty vs. Average Star Ratings
 ![Graph 2](./Images/Graph2.png)
 
 For this graph we decided to see how the review difficulty of a LEGO set influences its overall star rating. To properly illustrate this, we decided to create a box and whisker plot because it not only shows the median and quartiles, but it also shows if there are any outliers.
 
+Some notable observations are that while the Easy, Average, and Challenging columns are nearly identical, the Very Easy column seems to have a significantly lower 25th percentile and mean. Therefore we can conclude that the Very Easy difficulty generally has lower ratings.
+
+A quirk of the Box and Whisker plot is observable in the Very Challenging column. The Very Challenging column only has 5 star ratings and is therefore just a line.
+
 #### Graph 3: List Price Vs. Star Rating
 ![Graph 3](./Images/Graph3.png)
+
+Graph 3 compares the price of each LEGO set to it's price on the LEGO marketplace. While hard to interpret in the lower price region, there's a clear correlation that expensive sets ($600+) receive overall lower star ratings. This is most likely because when people spend more money they have higher expectations.
+
+To better view the cluster of points in the under $150 range we made a second scatter plot that only lists sets under $150.
+
 ![Graph 3.5](./Images/Graph3_5.png)
+
+Even though it is more spread out and easier to read, there is no clear correlation between list price and the star ratings for sets under $150. We believe this is because people's subconscious expectations treat these price points the same.
 
 #### Graph 4:
 ![Graph 4](./Images/Graph4.png)
+
+Graph 4 is a comparison between the number of pieces in a set with it's star rating. Since a vast majority of sets are under 1000 pieces the graph appears cluttered and its hard to discern if there's any useful information lurking in it. Therefore we decided to stretch the x axis by limited the piece count to 1000.
+
 ![Graph 4.5](./Images/Graph4_5.png)
+
+With this closer look we can now tell that there are far more 5 star ratings in sets with pieces under 200 pieces. Whether this is due to there being more sets under 200 pieces overall or if the average rating decreases is not clearly observable unfortunately.  Overall, it appears that the relationship between star ratings and the piece count is marginal at best.
 
 ## Machine Learning
 As stated in the introduction, we attempted to use a Gaussian Naive Bays classifier to predict the optimal features for a perfect LEGO set. Specifically, we looked at the recommended age, list price, difficulty, and theme of each set. The one thing we were not expecting, however, was to find that the data did not lend itself to classification at all.
 
 ![Machine Learning Results](./Images/MLResults.png)
 
-As you can see in the graph above, our training accuracy was only about 14%. At first, we thought we must have coded our model wrong, but after triple checking our code we were certain it was correct. We then tried training our model on many of the different features we had, removing and replacing the initial four listed above, but nothing helped. Upon further inspection, we realized that trying to predict an exact rating was extremely difficult, to the point the baseline accuracy was only 14.12%! 
+As you can see in the graph above, our training accuracy was only about 14%. At first, we thought we must have coded our model wrong, but after triple checking our code we were certain it was correct. We then tried training our model on many of the different features we had, removing and replacing the initial four listed above, but nothing helped. Upon further inspection, we realized that trying to predict an exact rating was extremely difficult, to the point the baseline accuracy was only 14.12%!
 
 ## Conclusion
+
+Although we weren't able to create the perfect machine learning model for LEGO star ratings, we label this project as an absolute success. Not only did we learn about the Gaussian Naive Bays classifier, but we also learned about the other classifier options when choosing which to use. We also learned about how to split our data and we got lots of practice graphing with MatPlotLib.
+
+Another lesson we learned is how to tell if a dataset is a good fit for a machine learning model. In order to create a predictor, we now know that there has to be a far clearer correlation between the independent variables and the variable we're trying to predict. Thanks to this project, we will not make this mistake again. Overall this was a great learning experience and a fun way to end the Computational Analysis of Big Data class.

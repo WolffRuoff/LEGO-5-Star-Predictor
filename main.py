@@ -100,17 +100,19 @@ class mains():
     plt.title("Piece Count vs Star Rating")
     plt.xlabel('Piece Count')
     plt.xlim(0,8000)
-    plt.yticks(np.arange(0, 5.1, step=0.2))
+    plt.yticks(np.arange(1, 5.1, step=0.2))
+    plt.ylim(.9,5.1)
     plt.ylabel('5-Star Rating')
     plt.show()
 
     # %% codecell
     #Graph 4.5 - Piece Count (Under 1000) Vs. Star Rating
     data.plot(kind='scatter',x='piece_count',y='val_star_rating',figsize=(9,4.5), alpha = 0.1)
-    plt.title("Piece Count vs Star Rating")
+    plt.title("Piece Count vs Star Rating Under 1000 Pieces")
     plt.xlabel('Piece Count')
     plt.xlim(0,1000)
-    plt.yticks(np.arange(0, 5.1, step=0.2))
+    plt.ylim(.9,5.1)
+    plt.yticks(np.arange(1, 5.1, step=0.2))
     plt.ylabel('5-Star Rating')
     plt.show()
 
