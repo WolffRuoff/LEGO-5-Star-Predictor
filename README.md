@@ -1,5 +1,9 @@
 # The Lego Rating Predictor #
 
+## Video Summary
+
+[![](http://img.youtube.com/vi/29ojAjJZUy0/0.jpg)](http://www.youtube.com/watch?v=29ojAjJZUy0 "LEGO Rating Predictor")
+
 ## Introduction ##
 When most people think of Denmark, one of the first things to pop into their minds is LEGO. LEGO, a Danish company founded in 1932, is now the largest toy company in the world with an annual revenue of $2.1 billion USD. As two students who were studying in Denmark, we thought it would be appropriate to base our data analysis project on one of the cornerstones of the Country we had the honor to stay in.
 
@@ -35,7 +39,7 @@ To better view the cluster of points in the under $150 range we made a second sc
 
 ![Graph 3.5](./Images/Graph3_5.png)
 
-Even though it is more spread out and easier to read, there is no clear correlation between list price and the star ratings for sets under $150. We believe this is because people's subconscious expectations treat these price points the same.
+Even though it is more spread out and easier to read, there is no clear correlation (only -0.05) between list price and the star ratings for sets under $150. We believe this is because people's subconscious expectations treat these price points the same.
 
 #### Graph 4:
 ![Graph 4](./Images/Graph4.png)
@@ -44,7 +48,7 @@ Graph 4 is a comparison between the number of pieces in a set with it's star rat
 
 ![Graph 4.5](./Images/Graph4_5.png)
 
-With this closer look we can now tell that there are far more 5 star ratings in sets with pieces under 200 pieces. Whether this is due to there being more sets under 200 pieces overall or if the average rating decreases is not clearly observable unfortunately.  Overall, it appears that the relationship between star ratings and the piece count is marginal at best.
+With this closer look we can now tell that there are far more 5 star ratings in sets with pieces under 200 pieces. Whether this is due to there being more sets under 200 pieces overall or if the average rating decreases is not clearly observable unfortunately.  Overall, it appears that the relationship between star ratings and the piece count is marginal at best with only a 0.07 correlation coefficient.
 
 ## Machine Learning
 As stated in the introduction, we attempted to use a Gaussian Naive Bays classifier to predict the optimal features for a perfect LEGO set. Specifically, we looked at the recommended age, list price, difficulty, and theme of each set. The one thing we were not expecting, however, was to find that the data did not lend itself to classification at all.
