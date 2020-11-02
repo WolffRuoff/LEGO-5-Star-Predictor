@@ -4,7 +4,7 @@
 
 [![](http://img.youtube.com/vi/29ojAjJZUy0/0.jpg)](http://www.youtube.com/watch?v=29ojAjJZUy0 "LEGO Rating Predictor")
 ### Update to video
-This video referrences the use of a Gaussian Naive Bays classifier. Since this video's release, we have replaced this with the K-Nearest Neighbors classifier increasing our testing accuracy to an astounding 97%! The updated video that reflects these new results will be released soon. 
+This video referrences the use of a Gaussian Naive Bays classifier. Since this video's release, we have replaced this with the K-Nearest Neighbors classifier increasing our testing accuracy to an astounding 97.3%! The updated video that reflects these new results will be released soon. 
 
 ## Introduction ##
 When most people think of Denmark, one of the first things to pop into their minds is LEGO. LEGO, a Danish company founded in 1932, is now the largest toy company in the world with an annual revenue of $2.1 billion USD. As two students who were studying in Denmark, we thought it would be appropriate to base our data analysis project on one of the cornerstones of the Country we had the honor to stay in.
