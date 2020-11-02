@@ -3,6 +3,8 @@
 ## Video Summary
 
 [![](http://img.youtube.com/vi/29ojAjJZUy0/0.jpg)](http://www.youtube.com/watch?v=29ojAjJZUy0 "LEGO Rating Predictor")
+### Update to video
+This video referrences the use of a Gaussian Naive Bays classifier. Since this video's release, we have replaced this with the K-Nearest Neighbors classifier increasing our testing accuracy to an astounding 97%! The updated video that reflects these new results will be released soon. 
 
 ## Introduction ##
 When most people think of Denmark, one of the first things to pop into their minds is LEGO. LEGO, a Danish company founded in 1932, is now the largest toy company in the world with an annual revenue of $2.1 billion USD. As two students who were studying in Denmark, we thought it would be appropriate to base our data analysis project on one of the cornerstones of the Country we had the honor to stay in.
@@ -11,7 +13,7 @@ We decided to explore what makes LEGO so popular. Specifically, we were curious 
 
 ![Set1](./Images/Set1.png)
 
-The second dataset, found [here](https://www.kaggle.com/mterzolo/lego-sets), had other numerical information like the list price, piece count and 5.0-star rating of each product. The CSV also had columns for set name and theme name, allowing us to link the two datasets together as a Pandas dataframe. We then used Pandas, MatPlotLib, and SKLearn to create graphs and a Gaussian Naive Bays classifier from our data.
+The second dataset, found [here](https://www.kaggle.com/mterzolo/lego-sets), had other numerical information like the list price, piece count and 5.0-star rating of each product. The CSV also had columns for set name and theme name, allowing us to link the two datasets together as a Pandas dataframe. We then used Pandas, MatPlotLib, and SKLearn to create graphs and a K-Nearest Neighbors classifier from our data.
 
 ## Graphs
 
@@ -51,11 +53,11 @@ Graph 4 is a comparison between the number of pieces in a set with it's star rat
 With this closer look we can now tell that there are far more 5 star ratings in sets with pieces under 200 pieces. Whether this is due to there being more sets under 200 pieces overall or if the average rating decreases is not clearly observable unfortunately.  Overall, it appears that the relationship between star ratings and the piece count is marginal at best with only a 0.07 correlation coefficient.
 
 ## Machine Learning
-As stated in the introduction, we attempted to use a Gaussian Naive Bays classifier to predict the optimal features for a perfect LEGO set. Specifically, we looked at the recommended age, list price, difficulty, and theme of each set. The one thing we were not expecting, however, was to find that the data did not lend itself to classification at all.
+As stated in the introduction, we attempted to use a K-Nearest Neighbors classifier to predict the optimal features for a perfect LEGO set. Specifically, we looked at the recommended age, list price, difficulty, number of reviews, and theme of each set.
 
-![Machine Learning Results](./Images/MLResults.png)
+![Machine Learning Results](./Images/MLResults2.png)
 
-As you can see in the graph above, our training accuracy was only about 14%. At first, we thought we must have coded our model wrong, but after triple checking our code we were certain it was correct. We then tried training our model on many of the different features we had, removing and replacing the initial four listed above, but nothing helped. Upon further inspection, we realized that trying to predict an exact rating was extremely difficult, to the point the baseline accuracy was only 14.12%!
+Illustrated in the graph above, our program is able to predict the star ratings of LEGO sets to the nearest tenth of a star with a testing accuracy was 97.3%. Compared to a baseline accuracy of 14.1% (if someone were to guess randomly), we were blown away by these results! While the K-Nearest Neighbor classifier is by no means the most efficient, with the size of our dataset processing time was near instantaneous.  <!-- At first, we thought we must have coded our model wrong, but after triple checking our code we were certain it was correct. We then tried training our model on many of the different features we had, removing and replacing the initial four listed above, but nothing helped. Upon further inspection, we realized that trying to predict an exact rating was extremely difficult, to the point the baseline accuracy was only 14.12%! -->
 
 ## Conclusion
 

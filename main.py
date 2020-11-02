@@ -1,53 +1,55 @@
+# %% Imports
 import matplotlib.pyplot as plt
 import pandas
 import os
 import numpy as np
 import matplotlib as mpl
+import seaborn as sns
 
-class mains():
-    # %% codecell
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import KFold
+from sklearn.metrics import accuracy_score
+from sklearn.neighbors import KNeighborsClassifier
+
+# %% Formatting for the graphs
+plt.style.use('seaborn')
+plt.rcParams['font.serif'] = 'Ubuntu'
+plt.rcParams['font.monospace'] = 'Ubuntu Mono'
+plt.rcParams['font.size'] = 7.0
+plt.rcParams['axes.labelsize'] = 12.0
+plt.rcParams['axes.labelweight'] = 'bold'
+plt.rcParams['xtick.labelsize'] = 8.0
+plt.rcParams['ytick.labelsize'] = 8.0
+plt.rcParams['figure.titlesize'] = 20.0
+plt.rcParams['figure.titleweight'] = 'bold'
+plt.rcParams['figure.dpi'] = 150
+plt.rcParams['figure.figsize'] = 9,4.5
+
+# %%
+def main():
+    #Setting up our data
     set1 = os.path.join('.', 'data', 'Set1')
     colors = pandas.read_csv(os.path.join(set1,'colors.csv'))
     inventories = pandas.read_csv(os.path.join(set1,'inventories.csv'))
     inventory_parts = pandas.read_csv(os.path.join(set1,'inventory_parts.csv'))
     sets = pandas.read_csv(os.path.join(set1,'sets.csv'))
-    len(sets)
     themes = pandas.read_csv(os.path.join(set1,'themes.csv'))
     set2 = os.path.join('.', 'data', 'Set2')
     lego_sets = pandas.read_csv(os.path.join(set2,'lego_sets.csv'))
-
-    # %% codecell
 
     data = pandas.merge(sets, inventories[['inventory_id', 'set_num']], on = 'set_num', how='left')
     data = pandas.merge(data, inventory_parts[['inventory_id', 'part_num', 'color_id']], on = 'inventory_id', how='right')
     data = pandas.merge(data, colors[['color_id','color_name', 'rgb']], on = 'color_id')
     data = pandas.merge(data, themes[['theme_id', 'theme_name']], on = 'theme_id')
-    len(data['set_name'])
     data = pandas.merge(lego_sets, data[['set_name', 'inventory_id', 'num_parts', 'part_num', 'theme_id', 'color_id', 'color_name', 'rgb']], on = 'set_name', how='left')
     data = data.drop(['prod_desc', 'prod_long_desc', 'country', 'num_parts'], axis=1)
     data = data.drop(['inventory_id', 'part_num', 'color_id', 'color_name', 'rgb', 'theme_id', 'prod_id'], axis=1, errors='ignore')
     data = data.drop_duplicates()
     data = data.dropna(axis=0, how='any')
-    len(data['set_name'])
-
-    # %% codecell
-    # Formatting for the graphs
-    import seaborn as sns
-    plt.style.use('seaborn')
-    plt.rcParams['font.serif'] = 'Ubuntu'
-    plt.rcParams['font.monospace'] = 'Ubuntu Mono'
-    plt.rcParams['font.size'] = 7.0
-    plt.rcParams['axes.labelsize'] = 12.0
-    plt.rcParams['axes.labelweight'] = 'bold'
-    plt.rcParams['xtick.labelsize'] = 8.0
-    plt.rcParams['ytick.labelsize'] = 8.0
-    plt.rcParams['figure.titlesize'] = 20.0
-    plt.rcParams['figure.titleweight'] = 'bold'
-    plt.rcParams['figure.dpi'] = 150
-    plt.rcParams['figure.figsize'] = 9,4.5
 
 
-    # %% codecell
     #Graph 1 - Bar Chart of Star Ratings
     data[['val_star_rating']].plot(kind='hist',bins=np.arange(0,5.1,0.2),rwidth=0.9, figsize=(8,4.5), legend=False)
     plt.xlabel('Rating')
@@ -59,8 +61,7 @@ class mains():
     plt.xlim(0,5)
     plt.show()
 
-    # %% codecell
-    #Graph 2 - Difficulty Vs. Average Star Ratings
+    # Graph 2 - Difficulty Vs. Average Star Ratings
     order = ['Very Easy', 'Easy', 'Average', 'Challenging','Very Challenging']
     plt.figure(figsize=(7,4.5))
     sns.boxplot(x=data['review_difficulty'], y=data['val_star_rating'], order=['Very Easy', 'Easy', 'Average', 'Challenging','Very Challenging'], width=0.5, fliersize=3, hue=data['review_difficulty'], palette='RdYlGn', hue_order=['Very Challenging', 'Challenging', 'Average', 'Easy','Very Easy'])
@@ -72,7 +73,6 @@ class mains():
     plt.ylim(1,5)
     plt.show()
 
-    # %% codecell
     #Graph 3 - List Price Vs. Star Rating
     data.plot(kind='scatter',x='list_price',y='val_star_rating', figsize=(10,4.5), alpha=0.5)
     plt.title("List Price Vs. Star Rating", weight='bold')
@@ -82,8 +82,9 @@ class mains():
     plt.xlim(0,1150)
     plt.ylim(.9,5.1)
     plt.ylabel('5-Star Rating')
+    np.corrcoef(data['list_price'],data['val_star_rating'])
     plt.show()
-    # %% codecell
+
     #Graph 3.5 - List Price Vs. Star Rating Under $100
     data.plot(kind='scatter',x='list_price',y='val_star_rating', figsize=(9,4.5), alpha=0.1)
     plt.title("List Price Vs. Star Rating Under $150")
@@ -94,7 +95,6 @@ class mains():
     plt.ylabel('5-Star Rating')
     plt.show()
 
-    # %% codecell
     #Graph 4 - Piece Count Vs. Star Rating
     data.plot(kind='scatter',x='piece_count',y='val_star_rating',figsize=(9,4.5), alpha = 0.1)
     plt.title("Piece Count vs Star Rating")
@@ -103,9 +103,9 @@ class mains():
     plt.yticks(np.arange(1, 5.1, step=0.2))
     plt.ylim(.9,5.1)
     plt.ylabel('5-Star Rating')
+    np.corrcoef(data['piece_count'],data['val_star_rating'])
     plt.show()
 
-    # %% codecell
     #Graph 4.5 - Piece Count (Under 1000) Vs. Star Rating
     data.plot(kind='scatter',x='piece_count',y='val_star_rating',figsize=(9,4.5), alpha = 0.1)
     plt.title("Piece Count vs Star Rating Under 1000 Pieces")
@@ -116,7 +116,6 @@ class mains():
     plt.ylabel('5-Star Rating')
     plt.show()
 
-    # %% codecell
     # Cleanup Data
     cleanup_difficulty = {"review_difficulty":     {"Very Easy": 1, "Easy": 2, "Average": 3, "Challenging": 4, "Very Challenging": 5}}
     data.replace(cleanup_difficulty, inplace=True)
@@ -142,7 +141,7 @@ class mains():
     data.replace({"theme_name": theme_dict}, inplace=True)
     data = data.round(2)
 
-    data = data.drop(['num_reviews'],axis=1)
+    #data = data.drop(['num_reviews'],axis=1)
     data = data.reset_index()
     data = data.drop(['index'], axis=1)
 
@@ -150,21 +149,38 @@ class mains():
         data.loc[i,'val_star_rating'] = data.loc[i,'val_star_rating'] * 10
     data.head()
 
-    # %% codecell
     #ML
-    from sklearn.model_selection import train_test_split
-    from sklearn.preprocessing import StandardScaler
-    from sklearn.naive_bayes import GaussianNB
-    from sklearn.model_selection import KFold
-    from sklearn.metrics import accuracy_score
     x = data.drop(['val_star_rating'], axis=1)
     y = list(data['val_star_rating'].astype(int))
 
     sc = StandardScaler()
     x = sc.fit_transform(x)
-    model = GaussianNB()
+    #We originally used a Gaussian Naive Bays classifier for our project but later found that a KNN classifier was far more accurate and didn't hurt performance. 
+    #modelGNB = GaussianNB()
+    #graphAccuracy(modelGNB, x, y, "Gaussian Naive Bays")
+    modelKNN = KNeighborsClassifier(n_neighbors=4)
+    graphAccuracy(modelKNN, x, y, "K-Nearest Neighbor")
 
-    # %% codecell
+    #baseline accuracy
+    rating_dict={}
+    for r in data['val_star_rating']:
+        if r in rating_dict:
+            rating_dict[r]=rating_dict[r]+1
+        else:
+            rating_dict[r]=1
+    rating_dict
+    max_val=max(rating_dict, key=rating_dict.get)
+    total=0.0
+    for key in rating_dict.keys():
+        total=total+rating_dict[key]
+    total
+    rating_dict[max_val]
+    baseline_accuracy=float(rating_dict[max_val]/total)*100
+    print("Majority Value: %s"%(max_val/10))
+    print("Baseline Accuracy: %s"%baseline_accuracy)
+
+#%% codecell
+def graphAccuracy(model, x, y, title):
     kf=KFold(20)
     test_accuracy=[]
     train_accuracy=[]
@@ -184,28 +200,16 @@ class mains():
         model.fit(x_train, y_train)
         train_accuracy.append(accuracy_score(y_train,model.predict(x_train)))
         test_accuracy.append(accuracy_score(y_test,model.predict(x_test)))
-
+    
     plt.hist(train_accuracy, density=True,label="Training Accuracy",bins=20, color='r')
     plt.hist(test_accuracy, density=True,label="Test Accuracy",bins=20, color='c')
     plt.xlabel("Percent Accuracy")
     plt.legend(loc='upper left')
+    plt.title(title, fontweight='bold')
     plt.show()
 
-    # %% codecell
-    #baseline accuracy
-    rating_dict={}
-    for r in data['val_star_rating']:
-        if r in rating_dict:
-            rating_dict[r]=rating_dict[r]+1
-        else:
-            rating_dict[r]=1
-    rating_dict
-    max_val=max(rating_dict, key=rating_dict.get)
-    total=0.0
-    for key in rating_dict.keys():
-        total=total+rating_dict[key]
-    total
-    rating_dict[max_val]
-    baseline_accuracy=float(rating_dict[max_val]/total)*100
-    print("Majority Value: %s"%(max_val/10))
-    print("Baseline Accuracy: %s"%baseline_accuracy)
+    print("Accuracy: " + str(accuracy_score(y_test, model.predict(x_test))))
+
+#%%
+main()
+# %%
